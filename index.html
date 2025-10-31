@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고해성사 성찰 가이드 (십계명 중심)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font setting -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+    </style>
+    <script>
+        // JavaScript for accordion functionality
+        function toggleCommandment(id) {
+            const content = document.getElementById(`content-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+
+            if (content.classList.contains('hidden')) {
+                // Close all other open sections
+                document.querySelectorAll('.cmd-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.toggle-icon').forEach(i => i.textContent = '▼');
+
+                // Open the clicked section
+                content.classList.remove('hidden');
+                icon.textContent = '▲';
+            } else {
+                // Close the clicked section
+                content.classList.add('hidden');
+                icon.textContent = '▼';
+            }
+        }
+
+        // 십계명 데이터 (JavaScript 객체)
+        const commandments = [
+            {
+                id: 1,
+                title: "제1계명: 한 분이신 하느님을 흠숭하여라.",
+                summary: "하느님께서 우리 삶의 중심이 되시는지, 그분을 믿고 사랑하며 희망하는지 성찰합니다.",
+                examination: [
+                    "하느님보다 돈, 명예, 쾌락, 혹은 특정 인물을 더 사랑하거나 의지하지는 않았습니까?",
+                    "기도와 미사, 신앙생활을 게을리하거나 의무적으로만 하지는 않았습니까?",
+                    "미신, 점, 사주팔자 등을 믿거나 교회 가르침에 어긋나는 행동을 하지는 않았습니까?",
+                    "하느님의 은총을 의심하거나 절망하여 하느님의 자비를 불신하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 2,
+                title: "제2계명: 하느님의 이름을 함부로 부르지 마라.",
+                summary: "하느님의 이름, 성인들의 이름, 성물 등을 존중하고 약속과 맹세를 성실히 지키는지 성찰합니다.",
+                examination: [
+                    "하느님이나 성인들의 이름을 무례하게, 또는 분노 속에서 함부로 언급하거나 욕설을 하지는 않았습니까?",
+                    "하느님의 이름으로 거짓 맹세를 하거나, 맹세한 것을 지키지 않았습니까?",
+                    "하느님의 말씀을 불경하게 다루거나, 성스러운 것을 모독하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 3,
+                title: "제3계명: 주일을 거룩히 지내라.",
+                summary: "주님의 날인 주일과 의무 축일을 온전히 봉헌하고, 충분한 휴식과 가족 간의 사랑을 실천했는지 성찰합니다.",
+                examination: [
+                    "주일과 의무 축일에 미사 참례를 고의로 빠지거나, 늦거나, 합당하지 않은 태도로 임하지는 않았습니까?",
+                    "주일에도 불필요한 일이나 노동을 하여 자신과 타인의 쉼을 방해하지는 않았습니까?",
+                    "주일을 오락이나 세속적인 일로만 채우고 하느님과 가족을 위한 시간을 소홀히 하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 4,
+                title: "제4계명: 부모에게 효도하여라.",
+                summary: "부모와 윗사람, 그리고 정당한 권위를 가진 이들을 공경하고 사랑했는지 성찰합니다.",
+                examination: [
+                    "부모님께 불순종하거나 무례하게 대하지는 않았습니까?",
+                    "부모님이나 웃어른들을 소홀히 대하거나, 물질적·정신적으로 필요한 것을 돌보지 않았습니까?",
+                    "가족의 평화를 깨는 말이나 행동을 하지는 않았습니까?",
+                    "국가나 사회의 정당한 법규와 권위를 존중하지 않았습니까?"
+                ]
+            },
+            {
+                id: 5,
+                title: "제5계명: 사람을 죽이지 마라.",
+                summary: "생명을 존중하고, 이웃에게 해를 끼치지 않았는지, 분노와 미움 등 부정적인 감정을 다스렸는지 성찰합니다.",
+                examination: [
+                    "자신이나 타인의 생명을 해치려 하거나, 낙태, 자살 등의 죄에 동조하지는 않았습니까?",
+                    "이웃에게 폭언, 상처 주는 말, 신체적 폭력을 가하지는 않았습니까?",
+                    "분노, 증오, 복수심을 품고 이웃을 용서하지 않았습니까?",
+                    "과도한 흡연이나 음주, 약물 등으로 건강을 해치지는 않았습니까?"
+                ]
+            },
+            {
+                id: 6,
+                title: "제6계명: 간음하지 마라.",
+                summary: "순결의 덕을 지키고, 결혼의 신성함을 존중하는지 성찰합니다. (9계명과 연결)",
+                examination: [
+                    "결혼 전이나 혼인 외의 부정한 관계를 맺지는 않았습니까?",
+                    "음란한 영상, 사진, 책 등을 보고 찾지는 않았습니까?",
+                    "자위행위를 하거나, 외설적인 행동으로 타인에게 죄를 짓게 하지는 않았습니까?",
+                    "옷차림이나 행동에서 부끄러움을 모르고 타인에게 음란한 생각을 불러일으키지는 않았습니까?"
+                ]
+            },
+            {
+                id: 7,
+                title: "제7계명: 도둑질하지 마라.",
+                summary: "타인의 재산을 존중하고, 정당한 노동의 대가를 지불하며, 정의와 공정함을 실천했는지 성찰합니다. (10계명과 연결)",
+                examination: [
+                    "타인의 물건이나 돈을 훔치거나 속여서 빼앗지는 않았습니까?",
+                    "빌린 물건을 돌려주지 않거나, 훼손시키지는 않았습니까?",
+                    "정당한 세금이나 공과금을 회피하거나, 공금을 유용하지는 않았습니까?",
+                    "직장이나 사업에서 게으름을 피워 정당한 노동을 하지 않거나, 타인의 권리를 침해하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 8,
+                title: "제8계명: 거짓 증언을 하지 마라.",
+                summary: "진실을 말하고, 타인의 명예를 존중하며, 비방이나 험담을 하지 않았는지 성찰합니다.",
+                examination: [
+                    "거짓말을 하여 타인에게 피해를 입히거나 상황을 모면하려 하지는 않았습니까?",
+                    "다른 사람의 험담이나 비방을 하거나, 악의적인 소문을 퍼뜨리지는 않았습니까?",
+                    "다른 사람의 비밀이나 약점을 함부로 말하여 명예를 훼손하지는 않았습니까?",
+                    "칭찬이나 덕담보다 비난이나 부정적인 말을 더 많이 하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 9,
+                title: "제9계명: 남의 아내를 탐내지 마라.",
+                summary: "순결한 마음을 지키고, 부정한 생각이나 욕망을 피했는지 성찰합니다. (마음속의 음욕)",
+                examination: [
+                    "마음속으로 다른 사람의 배우자를 탐내거나 음란한 생각을 즐기지는 않았습니까?",
+                    "하느님께서 주신 몸을 단순한 쾌락의 도구로 여기지는 않았습니까?",
+                    "정결한 마음을 유지하기 위한 노력을 게을리하지는 않았습니까?"
+                ]
+            },
+            {
+                id: 10,
+                title: "제10계명: 남의 재물을 탐내지 마라.",
+                summary: "타인의 소유를 부러워하거나 탐내지 않고, 가진 것에 감사하며 살았는지 성찰합니다. (마음속의 물욕)",
+                examination: [
+                    "다른 사람의 성공, 재산, 능력 등을 부러워하고 시기하지는 않았습니까?",
+                    "탐욕 때문에 불평하거나, 더 많은 것을 가지려고 집착하지는 않았습니까?",
+                    "가난한 이들에 대한 자선과 나눔에 인색하지는 않았습니까?",
+                    "현재 가진 것에 감사하지 않고 끊임없이 욕심을 부리지는 않았습니까?"
+                ]
+            }
+        ];
+
+        // 페이지 로드 시 십계명 목록 생성
+        window.onload = function() {
+            const container = document.getElementById('commandments-container');
+
+            // Set up Firebase for a potential future expansion, though not used here for static content
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            console.log("App ID for potential use:", appId);
+
+            commandments.forEach(cmd => {
+                const itemHtml = `
+                    <div class="bg-white rounded-xl shadow-lg mb-4 overflow-hidden transform transition duration-300 hover:shadow-xl">
+                        <!-- Header (Button to toggle) -->
+                        <button id="header-${cmd.id}" onclick="toggleCommandment(${cmd.id})"
+                                class="w-full text-left p-4 md:p-6 flex justify-between items-center text-lg font-bold transition duration-300 rounded-t-xl
+                                       bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            <span>${cmd.title}</span>
+                            <span id="icon-${cmd.id}" class="toggle-icon text-xl font-extrabold">▼</span>
+                        </button>
+
+                        <!-- Content (Initially Hidden) -->
+                        <div id="content-${cmd.id}" class="cmd-content hidden p-4 md:p-6 border-t border-gray-200">
+                            <p class="mb-4 text-sm md:text-base font-semibold text-gray-700 leading-relaxed border-l-4 border-yellow-500 pl-3">
+                                <span class="text-blue-600 font-extrabold">요약:</span> ${cmd.summary}
+                            </p>
+                            <h3 class="text-base md:text-lg font-bold text-blue-600 mb-3 border-b-2 border-blue-100 pb-1">🔍 성찰 질문</h3>
+                            <ul class="list-none space-y-3 text-sm md:text-base text-gray-800">
+                                ${cmd.examination.map(q => `<li class="flex items-start">
+                                    <svg class="w-5 h-5 mr-2 text-yellow-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                    <span>${q}</span>
+                                </li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += itemHtml;
+            });
+        };
+    </script>
+</head>
+<body class="antialiased p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Main Header Section -->
+        <header class="text-center mb-10 p-6 bg-white rounded-2xl shadow-xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-3">고해성사 성찰 안내</h1>
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">💛 하느님의 자비를 체험하는 시간 💛</h2>
+            <p class="mt-4 text-gray-600 text-sm sm:text-base leading-relaxed">
+                고해성사는 하느님의 무한한 용서를 통해 우리가 완전히 깨끗해지고 주님과 화해하는 성사입니다.
+                진정한 성찰은 죄를 기억해내는 것 이상으로, 하느님 사랑 앞에서 내 삶을 돌아보고 회개의 마음을 다지는 것입니다.
+                십계명을 기준으로 정직하게 성찰하고, 주님께 모든 것을 맡겨드리십시오.
+            </p>
+        </header>
+
+        <!-- Commandment List Container -->
+        <section id="commandments-container">
+            <!-- Commandments will be generated here by JavaScript -->
+        </section>
+
+        <!-- Conclusion / Prayer Section -->
+        <footer class="text-center mt-10 p-6 bg-blue-100 rounded-2xl shadow-inner border-t-4 border-blue-600">
+            <h3 class="text-xl font-bold text-blue-800 mb-3">🙏 고백 전, 잠시 기도 🙏</h3>
+            <p class="text-gray-700 text-sm sm:text-base italic leading-relaxed">
+                "자비로우신 하느님, 이 죄 많은 저를 불쌍히 여기소서. 제가 고백한 죄와 알지 못하고 지은 모든 죄를 용서하시고,
+                주님의 은총으로 다시는 죄를 짓지 않도록 저를 도와주소서. 아멘."
+            </p>
+            <p class="mt-4 text-sm font-semibold text-blue-600">
+                용기를 내십시오. 하느님께서는 당신이 오시기를 간절히 기다리십니다.
+            </p>
+        </footer>
+    </div>
+
+</body>
+</html>
