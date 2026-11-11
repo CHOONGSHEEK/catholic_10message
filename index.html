@@ -1,221 +1,599 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고해성사 성찰 가이드 (십계명 중심)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font setting -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
-        }
-    </style>
-    <script>
-        // JavaScript for accordion functionality
-        function toggleCommandment(id) {
-            const content = document.getElementById(`content-${id}`);
-            const icon = document.getElementById(`icon-${id}`);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고해성사 준비 · 십계명에 비추어 보는 양심 성찰</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap');
 
-            if (content.classList.contains('hidden')) {
-                // Close all other open sections
-                document.querySelectorAll('.cmd-content').forEach(c => c.classList.add('hidden'));
-                document.querySelectorAll('.toggle-icon').forEach(i => i.textContent = '▼');
+:root{
+  --bg:#f7f4ee; --paper:#fffdf9; --ink:#2b2730; --muted:#6b6470; --line:#e6dfd3;
+  --violet:#5b3f7a; --violet-soft:#efe8f6; --violet-deep:#3f2a57;
+  --gold:#b8892f; --gold-soft:#f8efd9; --green:#3d7a5a; --green-soft:#e6f2ea;
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:'Noto Serif KR',serif}
+.wrap{max-width:820px;margin:0 auto;padding:24px 16px 80px}
 
-                // Open the clicked section
-                content.classList.remove('hidden');
-                icon.textContent = '▲';
-            } else {
-                // Close the clicked section
-                content.classList.add('hidden');
-                icon.textContent = '▼';
-            }
-        }
+/* Hero */
+.hero{text-align:center;padding:40px 20px 32px}
+.hero .cross{font-size:28px;color:var(--gold);letter-spacing:.2em}
+.hero h1{font-size:clamp(26px,5vw,36px);margin:8px 0 6px;color:var(--violet-deep)}
+.hero .sub{color:var(--muted);margin:0}
+.hero p.lead{max-width:600px;margin:20px auto 0;font-size:15.5px}
 
-        // 십계명 데이터 (JavaScript 객체)
-        const commandments = [
-            {
-                id: 1,
-                title: "제1계명: 한 분이신 하느님을 흠숭하여라.",
-                summary: "하느님께서 우리 삶의 중심이 되시는지, 그분을 믿고 사랑하며 희망하는지 성찰합니다.",
-                examination: [
-                    "하느님보다 돈, 명예, 쾌락, 혹은 특정 인물을 더 사랑하거나 의지하지는 않았습니까?",
-                    "기도와 미사, 신앙생활을 게을리하거나 의무적으로만 하지는 않았습니까?",
-                    "미신, 점, 사주팔자 등을 믿거나 교회 가르침에 어긋나는 행동을 하지는 않았습니까?",
-                    "하느님의 은총을 의심하거나 절망하여 하느님의 자비를 불신하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 2,
-                title: "제2계명: 하느님의 이름을 함부로 부르지 마라.",
-                summary: "하느님의 이름, 성인들의 이름, 성물 등을 존중하고 약속과 맹세를 성실히 지키는지 성찰합니다.",
-                examination: [
-                    "하느님이나 성인들의 이름을 무례하게, 또는 분노 속에서 함부로 언급하거나 욕설을 하지는 않았습니까?",
-                    "하느님의 이름으로 거짓 맹세를 하거나, 맹세한 것을 지키지 않았습니까?",
-                    "하느님의 말씀을 불경하게 다루거나, 성스러운 것을 모독하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 3,
-                title: "제3계명: 주일을 거룩히 지내라.",
-                summary: "주님의 날인 주일과 의무 축일을 온전히 봉헌하고, 충분한 휴식과 가족 간의 사랑을 실천했는지 성찰합니다.",
-                examination: [
-                    "주일과 의무 축일에 미사 참례를 고의로 빠지거나, 늦거나, 합당하지 않은 태도로 임하지는 않았습니까?",
-                    "주일에도 불필요한 일이나 노동을 하여 자신과 타인의 쉼을 방해하지는 않았습니까?",
-                    "주일을 오락이나 세속적인 일로만 채우고 하느님과 가족을 위한 시간을 소홀히 하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 4,
-                title: "제4계명: 부모에게 효도하여라.",
-                summary: "부모와 윗사람, 그리고 정당한 권위를 가진 이들을 공경하고 사랑했는지 성찰합니다.",
-                examination: [
-                    "부모님께 불순종하거나 무례하게 대하지는 않았습니까?",
-                    "부모님이나 웃어른들을 소홀히 대하거나, 물질적·정신적으로 필요한 것을 돌보지 않았습니까?",
-                    "가족의 평화를 깨는 말이나 행동을 하지는 않았습니까?",
-                    "국가나 사회의 정당한 법규와 권위를 존중하지 않았습니까?"
-                ]
-            },
-            {
-                id: 5,
-                title: "제5계명: 사람을 죽이지 마라.",
-                summary: "생명을 존중하고, 이웃에게 해를 끼치지 않았는지, 분노와 미움 등 부정적인 감정을 다스렸는지 성찰합니다.",
-                examination: [
-                    "자신이나 타인의 생명을 해치려 하거나, 낙태, 자살 등의 죄에 동조하지는 않았습니까?",
-                    "이웃에게 폭언, 상처 주는 말, 신체적 폭력을 가하지는 않았습니까?",
-                    "분노, 증오, 복수심을 품고 이웃을 용서하지 않았습니까?",
-                    "과도한 흡연이나 음주, 약물 등으로 건강을 해치지는 않았습니까?"
-                ]
-            },
-            {
-                id: 6,
-                title: "제6계명: 간음하지 마라.",
-                summary: "순결의 덕을 지키고, 결혼의 신성함을 존중하는지 성찰합니다. (9계명과 연결)",
-                examination: [
-                    "결혼 전이나 혼인 외의 부정한 관계를 맺지는 않았습니까?",
-                    "음란한 영상, 사진, 책 등을 보고 찾지는 않았습니까?",
-                    "자위행위를 하거나, 외설적인 행동으로 타인에게 죄를 짓게 하지는 않았습니까?",
-                    "옷차림이나 행동에서 부끄러움을 모르고 타인에게 음란한 생각을 불러일으키지는 않았습니까?"
-                ]
-            },
-            {
-                id: 7,
-                title: "제7계명: 도둑질하지 마라.",
-                summary: "타인의 재산을 존중하고, 정당한 노동의 대가를 지불하며, 정의와 공정함을 실천했는지 성찰합니다. (10계명과 연결)",
-                examination: [
-                    "타인의 물건이나 돈을 훔치거나 속여서 빼앗지는 않았습니까?",
-                    "빌린 물건을 돌려주지 않거나, 훼손시키지는 않았습니까?",
-                    "정당한 세금이나 공과금을 회피하거나, 공금을 유용하지는 않았습니까?",
-                    "직장이나 사업에서 게으름을 피워 정당한 노동을 하지 않거나, 타인의 권리를 침해하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 8,
-                title: "제8계명: 거짓 증언을 하지 마라.",
-                summary: "진실을 말하고, 타인의 명예를 존중하며, 비방이나 험담을 하지 않았는지 성찰합니다.",
-                examination: [
-                    "거짓말을 하여 타인에게 피해를 입히거나 상황을 모면하려 하지는 않았습니까?",
-                    "다른 사람의 험담이나 비방을 하거나, 악의적인 소문을 퍼뜨리지는 않았습니까?",
-                    "다른 사람의 비밀이나 약점을 함부로 말하여 명예를 훼손하지는 않았습니까?",
-                    "칭찬이나 덕담보다 비난이나 부정적인 말을 더 많이 하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 9,
-                title: "제9계명: 남의 아내를 탐내지 마라.",
-                summary: "순결한 마음을 지키고, 부정한 생각이나 욕망을 피했는지 성찰합니다. (마음속의 음욕)",
-                examination: [
-                    "마음속으로 다른 사람의 배우자를 탐내거나 음란한 생각을 즐기지는 않았습니까?",
-                    "하느님께서 주신 몸을 단순한 쾌락의 도구로 여기지는 않았습니까?",
-                    "정결한 마음을 유지하기 위한 노력을 게을리하지는 않았습니까?"
-                ]
-            },
-            {
-                id: 10,
-                title: "제10계명: 남의 재물을 탐내지 마라.",
-                summary: "타인의 소유를 부러워하거나 탐내지 않고, 가진 것에 감사하며 살았는지 성찰합니다. (마음속의 물욕)",
-                examination: [
-                    "다른 사람의 성공, 재산, 능력 등을 부러워하고 시기하지는 않았습니까?",
-                    "탐욕 때문에 불평하거나, 더 많은 것을 가지려고 집착하지는 않았습니까?",
-                    "가난한 이들에 대한 자선과 나눔에 인색하지는 않았습니까?",
-                    "현재 가진 것에 감사하지 않고 끊임없이 욕심을 부리지는 않았습니까?"
-                ]
-            }
-        ];
+/* Generic card */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px;margin:18px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.card h2{font-size:20px;margin:0 0 12px;color:var(--violet-deep)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
 
-        // 페이지 로드 시 십계명 목록 생성
-        window.onload = function() {
-            const container = document.getElementById('commandments-container');
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.step{background:var(--violet-soft);border-radius:12px;padding:12px 8px;text-align:center}
+.step b{display:block;font-family:'Noto Serif KR',serif;font-size:17px;color:var(--violet-deep)}
+.step span{font-size:12.5px;color:var(--muted);line-height:1.5;display:block;margin-top:2px}
+@media (max-width:620px){.steps{grid-template-columns:repeat(2,1fr)}.step:last-child{grid-column:span 2}}
 
-            // Set up Firebase for a potential future expansion, though not used here for static content
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            console.log("App ID for potential use:", appId);
+/* Prayer box */
+.prayer{background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:12px;padding:16px 18px;font-family:'Noto Serif KR',serif;font-size:15.5px;line-height:1.95}
+.prayer .src{display:block;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:var(--muted);margin-top:8px}
 
-            commandments.forEach(cmd => {
-                const itemHtml = `
-                    <div class="bg-white rounded-xl shadow-lg mb-4 overflow-hidden transform transition duration-300 hover:shadow-xl">
-                        <!-- Header (Button to toggle) -->
-                        <button id="header-${cmd.id}" onclick="toggleCommandment(${cmd.id})"
-                                class="w-full text-left p-4 md:p-6 flex justify-between items-center text-lg font-bold transition duration-300 rounded-t-xl
-                                       bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            <span>${cmd.title}</span>
-                            <span id="icon-${cmd.id}" class="toggle-icon text-xl font-extrabold">▼</span>
-                        </button>
+/* Sticky nav + progress */
+.sticky{position:sticky;top:0;z-index:20;background:rgba(247,244,238,.94);backdrop-filter:blur(6px);padding:10px 0 10px;border-bottom:1px solid var(--line);margin:0 -16px;padding-left:16px;padding-right:16px}
+.progress-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.bar{flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--gold));transition:width .4s}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-weight:700;font-size:14px;color:var(--violet-deep);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.chip:hover{border-color:var(--violet)}
+.chip.done{background:var(--violet);color:#fff;border-color:var(--violet)}
+.chip.marked{box-shadow:0 0 0 2px var(--gold) inset}
+.chip.note{width:auto;padding:0 12px;border-radius:99px;font-size:13px}
 
-                        <!-- Content (Initially Hidden) -->
-                        <div id="content-${cmd.id}" class="cmd-content hidden p-4 md:p-6 border-t border-gray-200">
-                            <p class="mb-4 text-sm md:text-base font-semibold text-gray-700 leading-relaxed border-l-4 border-yellow-500 pl-3">
-                                <span class="text-blue-600 font-extrabold">요약:</span> ${cmd.summary}
-                            </p>
-                            <h3 class="text-base md:text-lg font-bold text-blue-600 mb-3 border-b-2 border-blue-100 pb-1">🔍 성찰 질문</h3>
-                            <ul class="list-none space-y-3 text-sm md:text-base text-gray-800">
-                                ${cmd.examination.map(q => `<li class="flex items-start">
-                                    <svg class="w-5 h-5 mr-2 text-yellow-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                    <span>${q}</span>
-                                </li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += itemHtml;
-            });
-        };
-    </script>
+/* Group heading */
+.group{display:flex;align-items:center;gap:12px;margin:34px 0 6px}
+.group h2{margin:0;font-size:19px;color:var(--violet-deep)}
+.group small{color:var(--muted)}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* Commandment */
+.cmd{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin:12px 0;overflow:hidden;scroll-margin-top:110px;transition:border-color .2s}
+.cmd.open{border-color:#cbbbe0;box-shadow:0 6px 24px rgba(91,63,122,.08)}
+.cmd-head{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;background:none;border:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.num{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--violet-soft);color:var(--violet-deep);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif KR',serif;font-weight:700;font-size:18px}
+.cmd.done .num{background:var(--violet);color:#fff}
+.cmd-title{flex:1}
+.cmd-title .label{font-size:12.5px;color:var(--muted)}
+.cmd-title .text{font-family:'Noto Serif KR',serif;font-size:17.5px;font-weight:700;line-height:1.5}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--gold-soft);color:#8a6418;white-space:nowrap}
+.caret{color:var(--muted);transition:transform .25s}
+.cmd.open .caret{transform:rotate(180deg)}
+.cmd-body{display:none;padding:0 18px 20px;border-top:1px dashed var(--line)}
+.cmd.open .cmd-body{display:block}
+
+.verse{margin:18px 0 6px;padding:14px 16px;background:var(--violet-soft);border-radius:12px;font-family:'Noto Serif KR',serif;color:var(--violet-deep)}
+.verse cite{display:block;font-style:normal;font-family:'Noto Sans KR',sans-serif;font-size:12.5px;color:var(--muted);margin-top:4px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin:10px 0 4px}
+.meta b{color:var(--ink);font-weight:500}
+.summary{margin:12px 0 4px;font-size:15px}
+
+.sec-title{font-size:14px;font-weight:700;color:var(--violet);margin:20px 0 8px;display:flex;align-items:center;gap:6px}
+.qs{list-style:none;margin:0;padding:0}
+.qs li{margin:0}
+.q{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .15s}
+.q:hover{background:#faf7f2}
+.q input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:20px;height:20px;margin-top:4px;border:2px solid #c9bfd6;border-radius:6px;cursor:pointer;display:grid;place-content:center;transition:.15s}
+.q input:checked{background:var(--gold);border-color:var(--gold)}
+.q input:checked::after{content:"";width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.q input:focus-visible{outline:3px solid #d9c9ee;outline-offset:2px}
+.q span{font-size:15px}
+.q.checked{background:var(--gold-soft)}
+
+.tip{font-size:13.5px;color:var(--muted);background:#f6f3ee;border-radius:10px;padding:10px 12px;margin-top:10px}
+.tip b{color:var(--ink)}
+.grat{background:var(--green-soft);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:14.5px}
+.grat b{color:var(--green)}
+
+textarea,input[type=text]{width:100%;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink);resize:vertical}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px var(--violet-soft)}
+
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{font:inherit;font-size:14px;font-weight:500;border-radius:99px;padding:9px 18px;cursor:pointer;border:1px solid var(--violet);background:var(--violet);color:#fff;transition:.2s}
+.btn:hover{background:var(--violet-deep)}
+.btn.ghost{background:transparent;color:var(--violet)}
+.btn.ghost:hover{background:var(--violet-soft)}
+.btn.warn{border-color:#c6b8b8;color:#8a5050;background:transparent}
+
+/* Notes summary */
+.notes-empty{color:var(--muted);font-size:14.5px;text-align:center;padding:16px}
+.note-group{margin:14px 0}
+.note-group h4{margin:0 0 6px;font-size:14.5px;color:var(--violet-deep)}
+.note-group ul{margin:0;padding-left:20px;font-size:14.5px}
+.note-group .memo{font-size:14.5px;background:#faf7f2;border-radius:8px;padding:8px 10px;margin-top:6px;white-space:pre-wrap}
+.privacy{font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:flex-start;margin-top:10px}
+
+/* Rite */
+.rite{counter-reset:r;list-style:none;padding:0;margin:0}
+.rite li{counter-increment:r;position:relative;padding:4px 0 14px 44px;font-size:15px}
+.rite li::before{content:counter(r);position:absolute;left:0;top:4px;width:30px;height:30px;border-radius:50%;background:var(--violet-soft);color:var(--violet-deep);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.rite li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:36px;bottom:2px;width:1px;background:var(--line)}
+.say{display:inline-block;background:var(--gold-soft);border-radius:6px;padding:1px 8px;font-family:'Noto Serif KR',serif;margin-top:4px}
+.who{font-size:12px;font-weight:700;color:var(--violet);margin-right:4px}
+
+details{border-top:1px solid var(--line);padding:12px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--violet);font-weight:700}
+details[open] summary::after{content:"−"}
+details p{margin:8px 0 0;font-size:14.5px;color:#454049}
+
+footer{text-align:center;padding:40px 16px 10px;color:var(--muted);font-size:13px}
+footer .final{font-family:'Noto Serif KR',serif;font-size:17px;color:var(--violet-deep);margin-bottom:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--violet-deep);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media print{
+  .sticky,.hero,.cmd,.group,.no-print,.actions,.toast{display:none!important}
+  body{background:#fff}
+  .card{border:0;box-shadow:none}
+}
+</style>
 </head>
-<body class="antialiased p-4 sm:p-8">
+<body>
+<div class="wrap">
 
-    <div class="max-w-4xl mx-auto">
-        <!-- Main Header Section -->
-        <header class="text-center mb-10 p-6 bg-white rounded-2xl shadow-xl">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-3">고해성사 성찰 안내</h1>
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">💛 하느님의 자비를 체험하는 시간 💛</h2>
-            <p class="mt-4 text-gray-600 text-sm sm:text-base leading-relaxed">
-                고해성사는 하느님의 무한한 용서를 통해 우리가 완전히 깨끗해지고 주님과 화해하는 성사입니다.
-                진정한 성찰은 죄를 기억해내는 것 이상으로, 하느님 사랑 앞에서 내 삶을 돌아보고 회개의 마음을 다지는 것입니다.
-                십계명을 기준으로 정직하게 성찰하고, 주님께 모든 것을 맡겨드리십시오.
-            </p>
-        </header>
+  <!-- ===== 머리말 ===== -->
+  <header class="hero">
+    <div class="cross">✠</div>
+    <h1>고해성사 준비</h1>
+    <p class="sub serif">십계명에 비추어 보는 양심 성찰</p>
+    <p class="lead">
+      고해성사는 죄의 목록을 점검하는 시간이기 전에, 돌아온 자녀를 기다리시는 아버지의 품으로 돌아가는 시간입니다.
+      서두르지 말고 한 계명씩 천천히, 하느님 사랑 앞에서 지난 시간을 돌아보십시오.
+    </p>
+  </header>
 
-        <!-- Commandment List Container -->
-        <section id="commandments-container">
-            <!-- Commandments will be generated here by JavaScript -->
-        </section>
-
-        <!-- Conclusion / Prayer Section -->
-        <footer class="text-center mt-10 p-6 bg-blue-100 rounded-2xl shadow-inner border-t-4 border-blue-600">
-            <h3 class="text-xl font-bold text-blue-800 mb-3">🙏 고백 전, 잠시 기도 🙏</h3>
-            <p class="text-gray-700 text-sm sm:text-base italic leading-relaxed">
-                "자비로우신 하느님, 이 죄 많은 저를 불쌍히 여기소서. 제가 고백한 죄와 알지 못하고 지은 모든 죄를 용서하시고,
-                주님의 은총으로 다시는 죄를 짓지 않도록 저를 도와주소서. 아멘."
-            </p>
-            <p class="mt-4 text-sm font-semibold text-blue-600">
-                용기를 내십시오. 하느님께서는 당신이 오시기를 간절히 기다리십니다.
-            </p>
-        </footer>
+  <!-- ===== 이렇게 사용하세요 ===== -->
+  <section class="card">
+    <div class="eyebrow">이렇게 사용하세요</div>
+    <h2>좋은 고해성사의 다섯 단계</h2>
+    <div class="steps">
+      <div class="step"><b>성찰</b><span>지은 죄를 기억하며 돌아봄</span></div>
+      <div class="step"><b>통회</b><span>하느님께 죄송한 마음으로 뉘우침</span></div>
+      <div class="step"><b>정개</b><span>다시는 죄짓지 않기로 결심함</span></div>
+      <div class="step"><b>고백</b><span>사제에게 죄를 솔직히 고백함</span></div>
+      <div class="step"><b>보속</b><span>사제가 정해 준 보속을 실천함</span></div>
     </div>
+    <p style="font-size:14.5px;margin:16px 0 0">
+      각 계명을 펼쳐 성찰 질문을 읽고, 마음에 걸리는 항목에 <b style="color:var(--gold)">체크</b>하거나 메모를 남기세요.
+      체크한 내용은 맨 아래 <a href="#notes">‘나의 고백 준비 노트’</a>에 자동으로 모입니다.
+    </p>
+  </section>
 
+  <!-- ===== 성찰 전 기도 ===== -->
+  <section class="card">
+    <div class="eyebrow">시작하며</div>
+    <h2>성찰 전 기도</h2>
+    <div class="prayer">
+      성령님, 오시어 제 마음을 밝혀 주소서.<br>
+      제가 지은 죄를 제대로 알아보게 하시고,<br>
+      진심으로 뉘우치며, 숨김없이 고백하고,<br>
+      새로운 삶을 굳게 결심할 수 있도록 은총을 베풀어 주소서.<br>
+      자비로우신 성모님, 저를 위하여 빌어 주소서. 아멘.
+      <span class="src">개인 기도 예시 — 자신의 말로 자유롭게 바치셔도 좋습니다.</span>
+    </div>
+    <div style="margin-top:16px">
+      <label for="lastConf" style="font-size:14px;font-weight:500">지난 고해성사는 언제였나요?</label>
+      <input type="text" id="lastConf" placeholder="예: 3개월 전, 지난 부활 판공 때" style="margin-top:6px">
+    </div>
+  </section>
+
+  <!-- ===== 진행 표시 ===== -->
+  <nav class="sticky no-print" aria-label="계명 바로가기">
+    <div class="progress-row">
+      <span>성찰 진행</span>
+      <div class="bar"><i id="progressBar"></i></div>
+      <span id="progressText">0 / 10</span>
+    </div>
+    <div class="chips" id="chips"></div>
+  </nav>
+
+  <!-- ===== 십계명 ===== -->
+  <div id="commandments"></div>
+
+  <!-- ===== 고백 준비 노트 ===== -->
+  <section class="card" id="notes" style="scroll-margin-top:110px">
+    <div class="eyebrow">고백하기 전에</div>
+    <h2>나의 고백 준비 노트</h2>
+    <div id="notesBody"><p class="notes-empty">아직 체크하거나 메모한 내용이 없습니다.</p></div>
+    <div class="privacy">🔒 <span>이 페이지는 아무것도 저장하거나 전송하지 않습니다. 창을 닫거나 새로고침하면 모든 체크와 메모가 사라집니다.</span></div>
+    <div class="actions no-print">
+      <button class="btn warn" onclick="clearAll()">모두 지우기</button>
+    </div>
+    <div class="tip" style="margin-top:14px">
+      <b>고백할 때:</b> 죄를 간단하고 분명하게 말씀드리면 됩니다. 긴 설명이나 변명, 다른 사람 이야기는 필요 없습니다.
+      대죄는 기억나는 대로 <b>종류와 횟수</b>를 고백하고, 판단이 어려운 것은 사제에게 여쭈어 보세요.
+    </div>
+  </section>
+
+  <!-- ===== 고해소에서 ===== -->
+  <section class="card">
+    <div class="eyebrow">고해소에서</div>
+    <h2>고해성사의 순서</h2>
+    <ol class="rite">
+      <li>십자성호를 그으며 시작합니다.<br><span class="say">성부와 성자와 성령의 이름으로. 아멘.</span></li>
+      <li>사제가 하느님의 자비를 신뢰하도록 권고합니다. 지난 고해 시기를 말씀드립니다.<br><span class="who">고해자</span><span class="say">고해한 지 ○주일(○개월) 됩니다.</span></li>
+      <li>성찰한 죄를 고백하고, 마지막에 이렇게 덧붙입니다.<br><span class="say">이 밖에 알아내지 못한 죄도 모두 용서하여 주십시오.</span></li>
+      <li>사제의 훈계를 듣고, 보속을 받습니다. 보속은 잘 기억해 두세요.</li>
+      <li>사제가 청하면 통회 기도를 바칩니다. (아래 기도)</li>
+      <li>사제가 사죄경을 외우면 십자성호를 그으며 <span class="say">아멘.</span> 으로 응답합니다.</li>
+      <li>고해소를 나와 가능한 한 빨리 보속을 실천하고, 용서받은 은총에 감사드립니다.</li>
+    </ol>
+  </section>
+
+  <!-- ===== 통회 기도 ===== -->
+  <section class="card">
+    <div class="eyebrow">통회</div>
+    <h2>통회 기도</h2>
+    <div class="prayer">
+      하느님, 제가 죄를 지어 참으로 좋으신 하느님의 마음을 아프게 하였사오니,
+      악을 저지르고 선을 소홀히 한 모든 잘못을 진심으로 뉘우치나이다.
+      또한 하느님의 은총으로 속죄하고 다시는 죄를 짓지 않으며
+      죄지을 기회를 피하기로 굳게 다짐하오니,
+      우리 구세주 예수 그리스도의 수난 공로를 보시고 저를 용서하소서. 아멘.
+      <span class="src">『가톨릭 기도서』 통회 기도 — 본당 기도서와 문구가 조금 다르면 기도서를 따르세요.</span>
+    </div>
+  </section>
+
+  <!-- ===== 자주 묻는 질문 ===== -->
+  <section class="card">
+    <div class="eyebrow">알아두면 좋은 것</div>
+    <h2>성찰을 도와주는 가르침</h2>
+    <details>
+      <summary>대죄와 소죄는 어떻게 구분하나요?</summary>
+      <p>대죄는 ① 중대한 문제에 관하여 ② 그것이 죄임을 충분히 알면서 ③ 자유로이 고의적으로 동의하여 지은 죄입니다. 세 조건이 모두 갖추어지지 않으면 소죄입니다. 대죄 중에 있다면 고해성사 전에 영성체를 하지 않습니다. (가톨릭 교회 교리서 1855–1861항)</p>
+    </details>
+    <details>
+      <summary>유혹이 떠오른 것도 죄인가요?</summary>
+      <p>나쁜 생각이나 감정이 떠오르는 것 자체는 죄가 아닙니다. 그것을 알아차리고도 일부러 붙잡고 즐기거나 동의할 때 죄가 됩니다. 유혹을 물리친 것은 오히려 은총에 협력한 것입니다.</p>
+    </details>
+    <details>
+      <summary>죄를 잊어버리고 고백하지 못했다면요?</summary>
+      <p>정직하게 성찰했는데도 기억하지 못한 죄는 함께 용서받습니다. 나중에 생각난 대죄는 다음 고해성사 때 고백하면 됩니다.</p>
+    </details>
+    <details>
+      <summary>행동하지 않은 것도 죄가 되나요?</summary>
+      <p>네. 통회 기도처럼 “악을 저지른 것”뿐 아니라 “선을 소홀히 한 것”도 돌아봅니다. 도와야 할 사람을 외면하거나 해야 할 의무를 게을리한 것도 성찰해 보세요.</p>
+    </details>
+    <details>
+      <summary>십계명은 어디에 나오나요?</summary>
+      <p>탈출기 20장 2–17절과 신명기 5장 6–21절에 나옵니다. 가톨릭 교회는 성 아우구스티노의 구분을 따라, 제1–3계명은 하느님 사랑, 제4–10계명은 이웃 사랑에 관한 계명으로 가르칩니다. 예수님께서는 이를 두 가지 큰 계명으로 요약하셨습니다(마태 22,37–40).</p>
+    </details>
+  </section>
+
+  <footer>
+    <div class="final">“너의 죄는 용서받았다. 평안히 가거라.”</div>
+    용기를 내십시오. 하느님께서는 당신이 돌아오기를 기다리고 계십니다.
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 십계명: 『가톨릭 기도서』 공식 문구
+const commandments = [
+  {
+    no:1, text:"한 분이신 하느님을 흠숭하여라.",
+    virtue:"믿음 · 희망 · 사랑",
+    ccc:"2084–2141", bible:"탈출 20,2-6",
+    verse:{t:"주 너의 하느님께 경배하고 그분만을 섬겨라.", r:"마태 4,10"},
+    summary:"하느님께서 내 삶의 첫자리에 계신지, 그분을 믿고 바라고 사랑하며 살았는지 돌아봅니다.",
+    qs:[
+      "돈, 명예, 일, 쾌락, 특정한 사람 등을 하느님보다 더 중요하게 여기며 살지 않았습니까?",
+      "매일의 기도를 소홀히 하거나, 마음 없이 형식적으로만 하지 않았습니까?",
+      "점, 사주, 궁합, 부적, 미신 등에 의지하거나 재미 삼아서라도 찾지 않았습니까?",
+      "신앙의 진리를 고의로 의심하거나 거부하고, 신앙인임을 드러내기를 부끄러워하지 않았습니까?",
+      "하느님의 자비를 믿지 못해 절망하거나, 반대로 회개 없이도 용서받으리라 쉽게 여기지 않았습니까?",
+      "대죄 중에 영성체를 하는 등 성사를 합당하지 않게 받지 않았습니까?"
+    ],
+    tip:"하느님 대신 내 마음을 가장 많이 차지한 것이 무엇이었는지 떠올려 보세요.",
+    grat:"이번 기간에 하느님이 가까이 계심을 느꼈던 순간은 언제였나요?"
+  },
+  {
+    no:2, text:"하느님의 이름을 함부로 부르지 마라.",
+    virtue:"경외심",
+    ccc:"2142–2167", bible:"탈출 20,7",
+    verse:{t:"하늘에 계신 우리 아버지, 아버지의 이름이 거룩히 빛나시며", r:"마태 6,9"},
+    summary:"하느님과 예수님, 성모님과 성인들의 이름, 그리고 거룩한 것을 공경하고 약속을 성실히 지켰는지 돌아봅니다.",
+    qs:[
+      "하느님, 예수님, 성모님, 성인들의 이름을 장난이나 분노, 습관으로 함부로 부르지 않았습니까?",
+      "하느님이나 교회, 성물 등 거룩한 것을 비웃거나 모독하는 말을 하지 않았습니까?",
+      "하느님을 걸고 거짓 맹세를 하거나, 하느님께 드린 약속(서원)을 지키지 않았습니까?",
+      "욕설이나 남을 저주하는 말을 하지 않았습니까?"
+    ],
+    tip:"말버릇처럼 쓰는 표현 가운데 거룩한 이름을 가볍게 만드는 것은 없는지 살펴보세요.",
+    grat:"하느님의 이름을 부르며 진심으로 찬미하거나 감사드린 때가 있었나요?"
+  },
+  {
+    no:3, text:"주일을 거룩히 지내라.",
+    virtue:"거룩함과 안식",
+    ccc:"2168–2195", bible:"탈출 20,8-11",
+    verse:{t:"안식일을 기억하여 거룩히 지켜라.", r:"탈출 20,8"},
+    summary:"주님의 부활을 기념하는 주일과 의무 대축일을 거룩하게 지내고, 참된 쉼과 사랑의 시간을 가졌는지 돌아봅니다.",
+    qs:[
+      "정당한 이유 없이 주일이나 의무 대축일 미사에 빠지지 않았습니까?",
+      "미사에 고의로 늦거나 일찍 나오고, 분심 속에 무성의하게 참례하지 않았습니까?",
+      "주일에 꼭 필요하지 않은 일로 나 자신이나 가족, 다른 사람의 쉼과 예배를 방해하지 않았습니까?",
+      "주일을 오락으로만 채우고, 기도와 가족, 이웃을 위한 시간을 소홀히 하지 않았습니까?"
+    ],
+    tip:"주일 미사 의무를 고의로 어긴 것은 중대한 죄입니다. 질병, 돌봄 등 정당한 사정이 있었다면 죄가 아닙니다.",
+    grat:"이번 기간에 은혜롭게 참례한 미사나 마음에 남은 말씀이 있었나요?"
+  },
+  {
+    no:4, text:"부모에게 효도하여라.",
+    virtue:"효경과 공경",
+    ccc:"2197–2257", bible:"탈출 20,12",
+    verse:{t:"네 아버지와 어머니를 공경하여라.", r:"탈출 20,12"},
+    summary:"부모와 가족, 그리고 정당한 권위를 지닌 이들을 사랑하고 공경했는지, 내가 맡은 자리에서 책임을 다했는지 돌아봅니다.",
+    qs:[
+      "부모님께 순종하지 않거나 무례하게 대하여 마음을 아프게 하지 않았습니까?",
+      "연로하시거나 편찮으신 부모님을 물질적·정신적으로 돌보는 일을 소홀히 하지 않았습니까?",
+      "(부모로서) 자녀에게 신앙을 전하고 사랑과 모범으로 가르치는 의무를 소홀히 하지 않았습니까?",
+      "배우자나 형제자매에게 상처를 주어 가정의 평화를 깨뜨리지 않았습니까?",
+      "윗사람과 스승, 정당한 권위를 존중하지 않거나, 권한을 가진 사람으로서 아랫사람을 부당하게 대하지 않았습니까?",
+      "시민으로서 정당한 법을 지키고 공동선에 이바지할 의무를 소홀히 하지 않았습니까?"
+    ],
+    tip:"제4계명은 자녀의 의무뿐 아니라 부모, 상사, 공직자 등 권위를 가진 이의 책임도 포함합니다.",
+    grat:"가족에게서 받은 사랑 가운데 감사드리고 싶은 것은 무엇인가요?"
+  },
+  {
+    no:5, text:"사람을 죽이지 마라.",
+    virtue:"생명 존중과 온유",
+    ccc:"2258–2330", bible:"탈출 20,13",
+    verse:{t:"자기 형제를 미워하는 자는 모두 살인자입니다.", r:"1요한 3,15"},
+    summary:"하느님께서 주신 나와 이웃의 생명과 몸, 마음을 소중히 여겼는지, 미움과 분노를 다스렸는지 돌아봅니다.",
+    qs:[
+      "다른 사람의 생명을 해치거나, 낙태·안락사·자살을 권하거나 돕거나 동조하지 않았습니까?",
+      "폭력, 폭언, 따돌림, 괴롭힘으로 다른 사람의 몸이나 마음에 상처를 주지 않았습니까?",
+      "분노와 미움, 복수심을 품고 용서하기를 거부하지 않았습니까?",
+      "과음, 약물, 음주운전·난폭운전 등으로 나와 남의 생명과 건강을 위험에 빠뜨리지 않았습니까?",
+      "나쁜 표양(본보기)을 보여 다른 사람을 죄짓게 하지 않았습니까?"
+    ],
+    tip:"예수님께서는 행동뿐 아니라 마음속의 분노와 모욕하는 말도 이 계명과 연결하셨습니다(마태 5,21-22).",
+    grat:"누군가를 용서하거나, 누군가에게 용서받은 경험이 있었나요?"
+  },
+  {
+    no:6, text:"간음하지 마라.",
+    virtue:"정결",
+    ccc:"2331–2400", bible:"탈출 20,14",
+    verse:{t:"여러분의 몸이 성령의 성전임을 모릅니까?", r:"1코린 6,19"},
+    summary:"하느님께서 주신 성(性)을 존중하고, 각자의 신분에 맞게 정결을 지키며 혼인의 신의를 지켰는지 돌아봅니다. 이 계명은 주로 행위를, 제9계명은 마음속 욕망을 다룹니다.",
+    qs:[
+      "혼인 밖의 성관계(혼전·혼외 관계)를 맺지 않았습니까?",
+      "음란물(영상, 사진, 글 등)을 보거나 찾거나 다른 사람에게 퍼뜨리지 않았습니까?",
+      "자위행위 등 정결을 거스르는 행위를 하지 않았습니까?",
+      "(기혼자로서) 배우자에게 충실하지 않거나, 혼인의 일치와 생명에 대한 개방을 거스르지 않았습니까?",
+      "말이나 옷차림, 행동으로 다른 사람을 유혹하거나 정결을 거스르게 하지 않았습니까?"
+    ],
+    tip:"부끄러워 고백을 망설이게 되는 죄일수록 용기를 내어 단순하게 말씀드리세요. 사제는 판단하기 위해서가 아니라 용서하기 위해 그 자리에 있습니다.",
+    grat:"내 몸과 다른 사람을 하느님의 선물로 소중히 대한 순간이 있었나요?"
+  },
+  {
+    no:7, text:"도둑질을 하지 마라.",
+    virtue:"정의와 나눔",
+    ccc:"2401–2463", bible:"탈출 20,15",
+    verse:{t:"주님, 보십시오, 제 재산의 반을 가난한 이들에게 주겠습니다.", r:"루카 19,8"},
+    summary:"다른 사람의 재산과 권리를 존중하고, 정직하게 일하며, 가난한 이웃과 나누었는지 돌아봅니다.",
+    qs:[
+      "남의 물건이나 돈을 훔치거나 속여서 가로채지 않았습니까?",
+      "빌린 것을 갚지 않거나, 남의 물건이나 공공 재산을 훼손하고도 배상하지 않았습니까?",
+      "세금을 부당하게 피하거나, 공금을 유용하거나, 부정한 방법으로 이익을 얻지 않았습니까?",
+      "직장에서 맡은 일을 성실히 하지 않거나, 고용주로서 정당한 임금과 대우를 하지 않았습니까?",
+      "도박이나 지나친 낭비로 가정에 피해를 주지 않았습니까?",
+      "가난하고 어려운 이웃을 외면하고 나눔에 인색하지 않았습니까?",
+      "하느님께서 맡기신 피조물과 자원을 함부로 낭비하거나 훼손하지 않았습니까?"
+    ],
+    tip:"부당하게 얻은 것이 있다면, 고백과 함께 가능한 범위에서 돌려주거나 배상하려는 결심이 필요합니다.",
+    grat:"누군가와 기쁘게 나누었던 일이 있었나요?"
+  },
+  {
+    no:8, text:"거짓 증언을 하지 마라.",
+    virtue:"진실",
+    ccc:"2464–2513", bible:"탈출 20,16",
+    verse:{t:"진리가 너희를 자유롭게 할 것이다.", r:"요한 8,32"},
+    summary:"말과 행동에서 진실했는지, 다른 사람의 명예와 좋은 이름을 지켜 주었는지 돌아봅니다.",
+    qs:[
+      "거짓말로 다른 사람에게 피해를 주거나, 곤란한 상황을 모면하려 하지 않았습니까?",
+      "없는 일을 지어내어 남을 모함하거나 악의적인 소문을 퍼뜨리지 않았습니까?",
+      "꼭 필요하지 않은데 다른 사람의 잘못이나 약점을 드러내어 명예를 훼손하지 않았습니까?",
+      "충분한 근거 없이 다른 사람을 경솔하게 판단하거나 의심하지 않았습니까?",
+      "지켜야 할 비밀을 누설하거나, 아첨과 위선으로 진실을 가리지 않았습니까?",
+      "인터넷이나 SNS에서 확인되지 않은 이야기나 남을 깎아내리는 글을 쓰거나 퍼뜨리지 않았습니까?"
+    ],
+    tip:"다른 사람의 명예를 훼손했다면, 가능한 방법으로 바로잡으려는 결심도 함께하세요.",
+    grat:"용기를 내어 진실을 말했거나, 누군가의 좋은 점을 말해 준 일이 있었나요?"
+  },
+  {
+    no:9, text:"남의 아내를 탐내지 마라.",
+    virtue:"마음의 정결",
+    ccc:"2514–2533", bible:"탈출 20,17",
+    verse:{t:"행복하여라, 마음이 깨끗한 사람들! 그들은 하느님을 볼 것이다.", r:"마태 5,8"},
+    summary:"마음속의 음란한 욕망을 다스리고, 생각과 시선을 깨끗하게 지키려고 노력했는지 돌아봅니다.",
+    qs:[
+      "다른 사람(특히 남의 배우자)을 향한 음란한 생각이나 욕망을 일부러 품고 즐기지 않았습니까?",
+      "다른 사람을 인격이 아닌 욕망의 대상으로 바라보지 않았습니까?",
+      "마음을 흐리게 하는 매체, 대화, 장소를 알면서도 일부러 가까이하지 않았습니까?",
+      "기도와 절제, 단정함 등 마음의 정결을 지키기 위한 노력을 게을리하지 않았습니까?"
+    ],
+    tip:"떠오르는 생각 자체는 죄가 아닙니다. 알면서 붙잡고 동의할 때 죄가 됩니다.",
+    grat:"유혹을 이겨 내도록 도와주신 하느님의 은총을 느낀 적이 있었나요?"
+  },
+  {
+    no:10, text:"남의 재물을 탐내지 마라.",
+    virtue:"가난한 마음과 감사",
+    ccc:"2534–2557", bible:"탈출 20,17",
+    verse:{t:"너의 보물이 있는 곳에 너의 마음도 있다.", r:"마태 6,21"},
+    summary:"다른 사람의 것을 시기하거나 탐내지 않고, 하느님께서 주신 것에 감사하며 만족하는 마음으로 살았는지 돌아봅니다.",
+    qs:[
+      "다른 사람의 재산, 성공, 재능, 외모 등을 시기하고 질투하지 않았습니까?",
+      "더 많이 가지려는 욕심에 사로잡혀 늘 불만과 불평 속에 살지 않았습니까?",
+      "다른 사람이 잘못되기를 바라거나 남의 불행을 속으로 기뻐하지 않았습니까?",
+      "재물에 마음을 빼앗겨 하느님과 이웃을 잊고 살지 않았습니까?"
+    ],
+    tip:"시기심은 다른 사람이 가진 것을 볼 때보다 내가 받은 선물을 잊을 때 커집니다.",
+    grat:"지금 내가 가진 것 가운데 하느님께 감사드릴 세 가지는 무엇인가요?"
+  }
+];
+
+// ===== 상태 (메모리에만 보관, 저장하지 않음) =====
+const state = {}; // no -> {checked:Set, memo:"", done:false}
+commandments.forEach(c => state[c.no] = {checked:new Set(), memo:"", done:false});
+
+const esc = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+function render(){
+  const box = document.getElementById('commandments');
+  const groups = [
+    {title:"하느님 사랑", sub:"제1–3계명", from:1, to:3},
+    {title:"이웃 사랑", sub:"제4–10계명", from:4, to:10}
+  ];
+  let html = "";
+  groups.forEach(g => {
+    html += `<div class="group"><h2>${g.title}</h2><small>${g.sub}</small></div>`;
+    commandments.filter(c => c.no>=g.from && c.no<=g.to).forEach(c => {
+      html += `
+      <article class="cmd" id="cmd-${c.no}">
+        <button class="cmd-head" aria-expanded="false" aria-controls="body-${c.no}" onclick="toggle(${c.no})">
+          <div class="num">${c.no}</div>
+          <div class="cmd-title">
+            <div class="label">제${c.no}계명 <span id="count-${c.no}"></span></div>
+            <div class="text">${c.text}</div>
+          </div>
+          <span class="caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="cmd-body" id="body-${c.no}">
+          <div class="verse">“${c.verse.t}”<cite>${c.verse.r}</cite></div>
+          <div class="meta">
+            <span>지향할 덕: <b>${c.virtue}</b></span>
+            <span>성경: <b>${c.bible}</b></span>
+            <span>교리서: <b>${c.ccc}항</b></span>
+          </div>
+          <p class="summary">${c.summary}</p>
+
+          <div class="sec-title">🔍 성찰 질문</div>
+          <ul class="qs">
+            ${c.qs.map((q,i)=>`
+              <li><label class="q" id="q-${c.no}-${i}">
+                <input type="checkbox" onchange="check(${c.no},${i},this.checked)" aria-label="${esc(q)}">
+                <span>${q}</span>
+              </label></li>`).join("")}
+          </ul>
+          <div class="tip">💡 ${c.tip}</div>
+
+          <div class="grat"><b>🌿 감사의 성찰</b><br>${c.grat}</div>
+
+          <div class="sec-title">✍️ 나의 메모</div>
+          <textarea rows="2" placeholder="떠오른 일, 횟수, 고백할 표현 등을 적어 두세요" oninput="memo(${c.no},this.value)"></textarea>
+
+          <div class="actions">
+            <button class="btn ghost" onclick="toggle(${c.no})">접기</button>
+            <button class="btn" id="done-${c.no}" onclick="finish(${c.no})">이 계명 성찰 마침 →</button>
+          </div>
+        </div>
+      </article>`;
+    });
+  });
+  box.innerHTML = html;
+
+  document.getElementById('chips').innerHTML =
+    commandments.map(c=>`<button class="chip" id="chip-${c.no}" onclick="jump(${c.no})" aria-label="제${c.no}계명">${c.no}</button>`).join("")
+    + `<button class="chip note" onclick="document.getElementById('notes').scrollIntoView()">노트</button>`;
+}
+
+function toggle(no, forceOpen){
+  const el = document.getElementById('cmd-'+no);
+  const open = forceOpen ?? !el.classList.contains('open');
+  document.querySelectorAll('.cmd.open').forEach(o=>{ if(o!==el){o.classList.remove('open');o.querySelector('.cmd-head').setAttribute('aria-expanded','false');}});
+  el.classList.toggle('open', open);
+  el.querySelector('.cmd-head').setAttribute('aria-expanded', open);
+  if(open) setTimeout(()=>el.scrollIntoView({block:'start'}), 30);
+}
+function jump(no){ toggle(no, true); }
+
+function check(no,i,val){
+  val ? state[no].checked.add(i) : state[no].checked.delete(i);
+  document.getElementById(`q-${no}-${i}`).classList.toggle('checked', val);
+  update();
+}
+function memo(no,val){ state[no].memo = val; update(); }
+
+function finish(no){
+  state[no].done = true;
+  update();
+  if(no < 10){ toggle(no+1, true); }
+  else {
+    document.getElementById('cmd-10').classList.remove('open');
+    document.getElementById('notes').scrollIntoView();
+    showToast("십계명 성찰을 모두 마쳤습니다. 노트를 살펴보세요 🙏");
+  }
+}
+
+function update(){
+  const doneCount = commandments.filter(c=>state[c.no].done).length;
+  document.getElementById('progressBar').style.width = (doneCount*10)+'%';
+  document.getElementById('progressText').textContent = `${doneCount} / 10`;
+
+  commandments.forEach(c=>{
+    const s = state[c.no];
+    const marked = s.checked.size>0 || s.memo.trim();
+    document.getElementById('cmd-'+c.no).classList.toggle('done', s.done);
+    document.getElementById('chip-'+c.no).classList.toggle('done', s.done);
+    document.getElementById('chip-'+c.no).classList.toggle('marked', !!marked);
+    document.getElementById('count-'+c.no).innerHTML = s.checked.size ? `<span class="badge">체크 ${s.checked.size}</span>` : "";
+    document.getElementById('done-'+c.no).textContent = c.no<10 ? "이 계명 성찰 마침 →" : "성찰 마치고 노트 보기 →";
+  });
+
+  // 노트
+  const last = document.getElementById('lastConf').value.trim();
+  let html = "";
+  if(last) html += `<p style="margin:0 0 8px;font-size:14.5px">지난 고해: <b>${esc(last)}</b></p>`;
+  commandments.forEach(c=>{
+    const s = state[c.no];
+    if(!s.checked.size && !s.memo.trim()) return;
+    html += `<div class="note-group"><h4>제${c.no}계명 · ${c.text}</h4>`;
+    if(s.checked.size) html += `<ul>${[...s.checked].sort((a,b)=>a-b).map(i=>`<li>${c.qs[i]}</li>`).join("")}</ul>`;
+    if(s.memo.trim()) html += `<div class="memo">${esc(s.memo.trim())}</div>`;
+    html += `</div>`;
+  });
+  const hasItems = commandments.some(c=>state[c.no].checked.size||state[c.no].memo.trim());
+  document.getElementById('notesBody').innerHTML = hasItems ? html :
+    (last ? html : "") + `<p class="notes-empty">아직 체크하거나 메모한 내용이 없습니다.</p>`;
+}
+
+function clearAll(){
+  if(!window.confirm("모든 체크와 메모를 지울까요?")) return;
+  commandments.forEach(c=>state[c.no]={checked:new Set(),memo:"",done:false});
+  document.querySelectorAll('.q input').forEach(i=>i.checked=false);
+  document.querySelectorAll('.q').forEach(q=>q.classList.remove('checked'));
+  document.querySelectorAll('.cmd textarea').forEach(t=>t.value="");
+  document.getElementById('lastConf').value="";
+  update();
+  showToast("모두 지웠습니다.");
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+document.getElementById('lastConf').addEventListener('input', update);
+render(); update();
+</script>
 </body>
 </html>
